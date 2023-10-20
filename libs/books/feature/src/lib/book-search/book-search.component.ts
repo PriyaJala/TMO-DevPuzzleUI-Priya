@@ -17,7 +17,7 @@ import { Book } from '@tmo/shared/models';
 })
 export class BookSearchComponent implements OnInit {
   books: ReadingListBook[];
-
+  isSearching = false;
   searchForm = this.fb.group({
     term: ''
   });
@@ -44,7 +44,7 @@ export class BookSearchComponent implements OnInit {
   }
 
   addBookToReadingList(book: Book) {
-    this.store.dispatch(addToReadingList({ book }));
+   this.store.dispatch(addToReadingList({ book }));
   }
 
   searchExample() {
@@ -52,8 +52,18 @@ export class BookSearchComponent implements OnInit {
     this.searchBooks();
   }
 
+  //This checks whether the user is searching the book
+  toggleSearchState() {
+    const searchItem = this.searchForm.value.term.trim(); 
+    this.isSearching = !this.isSearching;
+    if (!this.isSearching) {
+      this.searchForm.get('term').setValue(''); // Clear the search query
+    }
+  }
   searchBooks() {
-    if (this.searchForm.value.term) {
+    const searchItem = this.searchForm.value.term.trim(); 
+
+    if (searchItem) {
       this.store.dispatch(searchBooks({ term: this.searchTerm }));
     } else {
       this.store.dispatch(clearSearch());
