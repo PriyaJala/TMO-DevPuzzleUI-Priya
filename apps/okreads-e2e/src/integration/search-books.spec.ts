@@ -12,7 +12,7 @@ describe('When: Use the search feature', () => {
   });
 
   it('Then: I should see search results as I am typing', () => {
-    // This tests the the search results being displayed when the user is typing!
+    // This tests the search results being displayed when the user is typing!
     cy.get('input[type="search"]').type('jav');
 
     cy.get('form').submit();
