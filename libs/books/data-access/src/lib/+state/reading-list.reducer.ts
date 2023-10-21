@@ -25,6 +25,31 @@ export const initialState: State = readingListAdapter.getInitialState({
   loaded: false,
   error: null
 });
+// Add the "Mark as Finished" 
+const markBookAsFinishedHandler = on(ReadingListActions.markBookAsFinished, (state, action) => {
+  const typedState = state as State;
+  const updatedEntities = { ...typedState.entities };
+  
+  
+  for (const bookId of typedState.ids) {
+    const listItem = typedState.entities[bookId];
+    console.log(JSON.stringify(listItem));
+    console.log(JSON.stringify(action['bookId'])); 
+    console.log(JSON.stringify(action));
+    if (listItem && listItem.bookId === action['bookId']) {
+      updatedEntities[bookId] = {
+        ...listItem,
+        finished: true,
+        finishedDate: new Date().toISOString()
+      };
+    }
+  }
+
+  return {
+    ...typedState,
+    entities: updatedEntities,
+  };
+});
 
 const readingListReducer = createReducer(
   initialState,
@@ -52,7 +77,9 @@ const readingListReducer = createReducer(
   ),
   on(ReadingListActions.removeFromReadingList, (state, action) =>
     readingListAdapter.removeOne(action.item.bookId, state)
-  )
+  ),
+  
+  markBookAsFinishedHandler
 );
 
 export function reducer(state: State | undefined, action: Action) {

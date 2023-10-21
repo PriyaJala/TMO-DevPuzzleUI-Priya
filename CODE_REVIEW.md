@@ -29,7 +29,7 @@ In the functionality i can address to a few problems like
 
     *  In most of the apps, usually there is a click functionality for the header like on "okreads" which redirects to the home screen.
 
-    * There should be a cancel button in place of search after the user searches for a book.
+    * There should be a cancel button in place of search after the user enters the text.
 
    *  In the "Reading List", recently added book should be displayed on top for better accesibility of the book.
 

@@ -37,7 +37,22 @@ export const getAllBooks = createSelector<
 >(getBooks, getReadingListEntities, (books, entities) => {
   return books.map(b => ({ ...b, isAdded: Boolean(entities[b.id]) }));
 });
-
+export const getAllBooksAndFinished = createSelector(
+  getAllBooks, // Use your existing selector
+  getReadingListEntities, // Get the reading list entities
+  (books, entities) => {
+    // Iterate through books and add the 'finished' property
+    return books.map(b => {
+      const readingListItem = entities[b.id];
+      return {
+        ...b,
+        isAdded: Boolean(readingListItem),
+        finished: readingListItem ? readingListItem.finished : false,
+        finishedDate: readingListItem ? readingListItem.finishedDate : null
+      };
+    });
+  }
+);
 export const getReadingList = createSelector(getReadingListState, selectAll);
 
 export const getTotalUnread = createSelector(getReadingListState, selectTotal);
