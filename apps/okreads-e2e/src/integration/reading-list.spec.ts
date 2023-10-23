@@ -10,5 +10,5 @@ describe('When: I use the reading list feature', () => {
       'contain.text',
       'My Reading List'
     );
-  });
+  });  
 });
