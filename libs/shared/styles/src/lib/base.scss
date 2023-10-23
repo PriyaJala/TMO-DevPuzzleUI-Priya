@@ -7,7 +7,7 @@
 body {
   font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
-}
+    color: $black;}
 
 h1,
 h2 {
@@ -18,15 +18,15 @@ h2 {
 
 input {
   font-size: 0.8rem;
-  border: 1px solid $gray40;
+  border: 1px solid $black;
   padding: $spacing-xxs;
 }
 
 a {
   cursor: pointer;
-  color: $pink-accent;
+  color: $pink-dark;
 
   &:hover {
-    color: $pink-dark;
+    color: $pink-accent;
   }
 }

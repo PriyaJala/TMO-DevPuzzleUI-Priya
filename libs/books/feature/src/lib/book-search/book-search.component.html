@@ -7,9 +7,12 @@
       placeholder="Search for books to add to your reading list"
       formControlName="term"
     />
-    <button mat-icon-button matSuffix>
-      <mat-icon>search</mat-icon>
+   
+    <button mat-icon-button matSuffix aria-label="Search" (click)="toggleSearchState()">
+      <mat-icon *ngIf="!isSearching">search</mat-icon>
+      <mat-icon *ngIf="isSearching">cancel</mat-icon>
     </button>
+    
   </mat-form-field>
 </form>
 
