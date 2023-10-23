@@ -26,7 +26,7 @@ describe('Books Reducer', () => {
       ];
       const action = ReadingListActions.loadReadingListSuccess({ list });
 
-      const result: State = reducer(initialState, action);
+      const result: any = reducer(initialState, action);
 
       expect(result.loaded).toBe(true);
       expect(result.ids.length).toEqual(3);
@@ -37,7 +37,7 @@ describe('Books Reducer', () => {
         book: createBook('B')
       });
 
-      const result: State = reducer(state, action);
+      const result: any = reducer(state, action);
 
       expect(result.ids).toEqual(['A', 'B']);
     });
@@ -47,11 +47,22 @@ describe('Books Reducer', () => {
         item: createReadingListItem('C')
       });
 
-      const result: State = reducer(state, action);
+      const result: any = reducer(state, action);
 
       expect(result.ids).toEqual(['A', 'B']);
     });
+
+
+  it('failedMArkBookInReadingList should undo book mark from the state', () => {
+    const action = ReadingListActions.failedMarkBookInReadingList({
+      item: createReadingListItem('C')
+    });
+
+    const result: any = reducer(state, action);
+
+    expect(result.ids).toEqual(['A', 'B']);
   });
+});
 
   describe('unknown action', () => {
     it('should return the previous state', () => {

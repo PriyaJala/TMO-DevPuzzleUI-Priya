@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import {
   addToReadingList,
   clearSearch,
   getAllBooks,
   ReadingListBook,
+  removeFromReadingList,
   searchBooks
 } from '@tmo/books/data-access';
 import { FormBuilder } from '@angular/forms';
-import { Book } from '@tmo/shared/models';
+import { Book, ReadingListItem } from '@tmo/shared/models';
 
 @Component({
   selector: 'tmo-book-search',
@@ -23,8 +25,10 @@ export class BookSearchComponent implements OnInit {
   });
 
   constructor(
-    private readonly store: Store,
+    private readonly store: Store, 
+    private snackBar: MatSnackBar,
     private readonly fb: FormBuilder
+   
   ) {}
 
   get searchTerm(): string {
@@ -35,6 +39,7 @@ export class BookSearchComponent implements OnInit {
     this.store.select(getAllBooks).subscribe(books => {
       this.books = books;
     });
+   
   }
 
   formatDate(date: void | string) {
@@ -44,8 +49,31 @@ export class BookSearchComponent implements OnInit {
   }
 
   addBookToReadingList(book: Book) {
-   this.store.dispatch(addToReadingList({ book }));
+  
+   console.log('Book:', book);
+  const b=JSON.parse(JSON.stringify(book));  
+    const action = b.isAdded ? 'removed' : 'added';
+    const snackBarRef = this.snackBar.open(`Book ${action} to your reading list.`, 'Dismiss', {
+      duration: 2000, 
+    });
+    if (b.isAdded) {
+     this.store.dispatch(removeFromReadingList({ item: this.createReadingListItem(book) }));
+
+    } else {
+      // Book is not in the reading list, so add it
+      this.store.dispatch(addToReadingList({ book }));
+    }
   }
+  createReadingListItem(book: Book): ReadingListItem {
+    return {
+      bookId: book.id,
+      title: book.title,
+      authors: book.authors,
+      description: book.description,
+      
+    };
+  }
+  
 
   searchExample() {
     this.searchForm.controls.term.setValue('javascript');
@@ -67,6 +95,7 @@ export class BookSearchComponent implements OnInit {
       this.store.dispatch(searchBooks({ term: this.searchTerm }));
     } else {
       this.store.dispatch(clearSearch());
-    }
   }
+}
+
 }

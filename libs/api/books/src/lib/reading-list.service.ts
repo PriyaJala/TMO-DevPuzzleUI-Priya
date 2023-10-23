@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { StorageService } from '@tmo/shared/storage';
 import { Book, ReadingListItem } from '@tmo/shared/models';
 
@@ -26,6 +26,22 @@ export class ReadingListService {
   async removeBook(id: string): Promise<void> {
     this.storage.update(list => {
       return list.filter(x => x.bookId !== id);
+    });
+  }
+  //async call to when book is marked as finished
+  async markBookAsFinished(itemId: string): Promise<void> {
+    this.storage.update(list => {
+      const itemIndex = list.findIndex(x => x.bookId === itemId);
+
+      if (itemIndex !== -1) {
+        list[itemIndex].finished = true;
+        list[itemIndex].finishedDate = new Date().toISOString();
+       
+      } else {
+        throw new NotFoundException('Reading list item not found');
+      }
+     
+      return list;
     });
   }
 }
