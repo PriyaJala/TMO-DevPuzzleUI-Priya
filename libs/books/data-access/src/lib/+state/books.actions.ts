@@ -1,19 +1,26 @@
+// action-types.ts
+export const SEARCH_BOOKS = '[Books] Search';
+export const SEARCH_BOOKS_SUCCESS = '[Books] Search Success';
+export const SEARCH_BOOKS_FAILURE = '[Books] Search Failure';
+export const CLEAR_SEARCH = '[Books] Clear Search';
+
+// actions.ts
 import { createAction, props } from '@ngrx/store';
 import { Book } from '@tmo/shared/models';
 
 export const searchBooks = createAction(
-  '[Books Search Bar] Search',
+  SEARCH_BOOKS,
   props<{ term: string }>()
 );
 
 export const searchBooksSuccess = createAction(
-  '[Book Search API] Search success',
+  SEARCH_BOOKS_SUCCESS,
   props<{ books: Book[] }>()
 );
 
 export const searchBooksFailure = createAction(
-  '[Book Search API] Search failure',
+  SEARCH_BOOKS_FAILURE,
   props<{ error: any }>()
 );
 
-export const clearSearch = createAction('[Books Search Bar] Clear Search');
+export const clearSearch = createAction(CLEAR_SEARCH);
